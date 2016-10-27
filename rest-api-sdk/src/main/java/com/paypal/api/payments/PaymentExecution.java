@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class PaymentExecution  extends PayPalModel {
+public class PaymentExecution extends PayPalModel {
 
 	/**
 	 * The ID of the Payer, passed in the `return_url` by PayPal.
@@ -32,4 +33,5 @@ public class PaymentExecution  extends PayPalModel {
 	 */
 	public PaymentExecution() {
 	}
+
 }

@@ -2,13 +2,14 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Amount  extends PayPalModel {
+public class Amount extends PayPalModel {
 
 	/**
 	 * 3-letter [currency code](https://developer.paypal.com/docs/integration/direct/rest_api_payment_country_currency_support/). PayPal does not support all currencies.

@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Order  extends PayPalResource {
+public class Order extends PayPalResource {
 
 	/**
 	 * Identifier of the order transaction.
@@ -21,6 +22,13 @@ public class Order  extends PayPalResource {
 	 * Identifier to the purchase unit associated with this object. Obsolete. Use one in cart_base.
 	 */
 	private String purchaseUnitReferenceId;
+
+	/**
+	 * @deprecated Use {@link #purchaseUnitReferenceId} instead
+	 * Identifier to the purchase unit associated with this object. Obsolete. Use one in cart_base.
+	 */
+	@Deprecated
+	private String referenceId;
 
 	/**
 	 * Amount being collected.
@@ -38,12 +46,12 @@ public class Order  extends PayPalResource {
 	private String state;
 
 	/**
-	 * Reason code for the transaction state being Pending or Reversed. Only supported when the `payment_method` is set to `paypal`.
+	 * Reason code for the transaction state being Pending or Reversed. This field will replace pending_reason field eventually. Only supported when the `payment_method` is set to `paypal`.
 	 */
 	private String reasonCode;
 
 	/**
-	 * [DEPRECATED] Reason the transaction is in pending state. Use reason_code field above instead. 
+	 * [DEPRECATED] Reason code for the transaction state being Pending. Obsolete. Retained for backward compatability. Use reason_code field above instead. 
 	 */
 	private String pendingReason;
 
@@ -81,7 +89,7 @@ public class Order  extends PayPalResource {
 	 * 
 	 */
 	private List<Links> links;
-	
+
 	/**
 	 * Default Constructor
 	 */
@@ -94,9 +102,9 @@ public class Order  extends PayPalResource {
 	public Order(Amount amount) {
 		this.amount = amount;
 	}
-	
+
 	/**
-	 * Obtain the Order resource for the given identifier.
+	 * Shows details for an order, by ID.
 	 * @deprecated Please use {@link #get(APIContext, String)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -111,7 +119,7 @@ public class Order  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Order resource for the given identifier.
+	 * Shows details for an order, by ID.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param orderId
@@ -120,7 +128,6 @@ public class Order  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public static Order get(APIContext apiContext, String orderId) throws PayPalRESTException {
-
 		if (orderId == null) {
 			throw new IllegalArgumentException("orderId cannot be null");
 		}
@@ -133,7 +140,7 @@ public class Order  extends PayPalResource {
 
 
 	/**
-	 * Creates (and processes) a new Capture Transaction added as a related resource.
+	 * Captures a payment for an order, by ID. To use this call, the original payment call must specify an intent of `order`. In the JSON request body, include the payment amount and indicate whether this capture is the final capture for the authorization.
 	 * @deprecated Please use {@link #capture(APIContext, Capture)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -148,7 +155,7 @@ public class Order  extends PayPalResource {
 	}
 
 	/**
-	 * Creates (and processes) a new Capture Transaction added as a related resource.
+	 * Captures a payment for an order, by ID. To use this call, the original payment call must specify an intent of `order`. In the JSON request body, include the payment amount and indicate whether this capture is the final capture for the authorization.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param capture
@@ -157,7 +164,6 @@ public class Order  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public Capture capture(APIContext apiContext, Capture capture) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -173,7 +179,7 @@ public class Order  extends PayPalResource {
 
 
 	/**
-	 * Voids (cancels) an Order.
+	 * Voids, or cancels, an order, by ID. You cannot void an order if a payment has already been partially or fully captured.
 	 * @deprecated Please use {@link #doVoid(APIContext)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -186,14 +192,13 @@ public class Order  extends PayPalResource {
 	}
 
 	/**
-	 * Voids (cancels) an Order.
+	 * Voids, or cancels, an order, by ID. You cannot void an order if a payment has already been partially or fully captured.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @return Order
 	 * @throws PayPalRESTException
 	 */
 	public Order doVoid(APIContext apiContext) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -206,7 +211,7 @@ public class Order  extends PayPalResource {
 
 
 	/**
-	 * Creates an authorization on an order
+	 * Authorizes an order, by ID. Include an `amount` object in the JSON request body.
 	 * @deprecated Please use {@link #authorize(APIContext)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -219,14 +224,13 @@ public class Order  extends PayPalResource {
 	}
 
 	/**
-	 * Creates an authorization on an order
+	 * Authorizes an order, by ID. Include an `amount` object in the JSON request body.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @return Authorization
 	 * @throws PayPalRESTException
 	 */
 	public Authorization authorize(APIContext apiContext) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -236,6 +240,5 @@ public class Order  extends PayPalResource {
 		String payLoad = this.toJSON();
 		return configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, Authorization.class);
 	}
-
 
 }

@@ -2,13 +2,14 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Credit  extends PayPalModel {
+public class Credit extends PayPalModel {
 
 	/**
 	 * Unique identifier of credit resource.
@@ -19,7 +20,6 @@ public class Credit  extends PayPalModel {
 	 * specifies type of credit
 	 */
 	private String type;
-
 
 	/**
 	 * Default Constructor

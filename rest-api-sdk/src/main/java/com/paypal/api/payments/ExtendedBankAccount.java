@@ -1,9 +1,9 @@
 package com.paypal.api.payments;
 
-
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -20,4 +20,5 @@ public class ExtendedBankAccount extends BankAccount {
 	 */
 	public ExtendedBankAccount() {
 	}
+
 }

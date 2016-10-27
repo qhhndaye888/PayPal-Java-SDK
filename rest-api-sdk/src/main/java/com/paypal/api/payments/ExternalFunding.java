@@ -2,8 +2,9 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -34,6 +35,11 @@ public class ExternalFunding extends PayPalModel {
 	 * Amount being funded by the external funding account
 	 */
 	private Amount amount;
+
+	/**
+	 * Indicates that the Payment should be fully funded by External Funded Incentive
+	 */
+	private String fundingInstruction;
 
 	/**
 	 * Default Constructor

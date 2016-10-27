@@ -12,12 +12,12 @@ import lombok.experimental.Accessors;
 public class Phone extends PayPalModel {
 
 	/**
-	 * The country calling code (CC) as defined by E.164. The combined length of CC+national cannot be more than 15 digits. 
+	 * Country code (from in E.164 format)
 	 */
 	private String countryCode;
 
 	/**
-	 * The national number as defined by E.164. The combined length of CC+national cannot be more than 15 digits. A national number consists of National Destination Code (NDC) and Subscriber Number (SN).
+	 * In-country phone number (from in E.164 format)
 	 */
 	private String nationalNumber;
 

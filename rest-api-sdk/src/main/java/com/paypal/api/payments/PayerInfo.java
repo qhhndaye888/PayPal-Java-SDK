@@ -2,13 +2,14 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class PayerInfo  extends PayPalModel {
+public class PayerInfo extends PayPalModel {
 
 	/**
 	 * Email address representing the payer. 127 characters max.
@@ -21,9 +22,15 @@ public class PayerInfo  extends PayPalModel {
 	private String externalRememberMeId;
 
 	/**
+	 * @deprecated use {@link #buyerAccountNumber} instead
+	 */
+	@Deprecated
+	private String accountNumber;
+
+	/**
 	 * Account Number representing the Payer
 	 */
-	private String accountNumber;
+	private String buyerAccountNumber;
 
 	/**
 	 * Salutation of the payer.
@@ -91,8 +98,9 @@ public class PayerInfo  extends PayPalModel {
 	private Address billingAddress;
 
 	/**
-	 * Shipping address of payer PayPal account.
+	 * @deprecated  Use shipping address present in purchase unit or at root level of checkout Session.
 	 */
+	@Deprecated
 	private ShippingAddress shippingAddress;
 
 	/**
@@ -100,4 +108,5 @@ public class PayerInfo  extends PayPalModel {
 	 */
 	public PayerInfo() {
 	}
+
 }

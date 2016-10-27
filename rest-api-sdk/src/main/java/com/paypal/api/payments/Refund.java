@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Refund  extends PayPalResource {
+public class Refund extends PayPalResource {
 
 	/**
 	 * ID of the refund transaction. 17 characters max.
@@ -31,6 +32,11 @@ public class Refund  extends PayPalResource {
 	 * Reason description for the Sale transaction being refunded.
 	 */
 	private String reason;
+
+	/**
+	 * Your own invoice or tracking ID number. Character length and limitations: 127 single-byte alphanumeric characters.
+	 */
+	private String invoiceNumber;
 
 	/**
 	 * ID of the Sale transaction being refunded. 
@@ -63,20 +69,25 @@ public class Refund  extends PayPalResource {
 	private String updateTime;
 
 	/**
+	 * The reason code for the refund state being pending
+	 */
+	private String reasonCode;
+
+	/**
 	 * 
 	 */
-	private List<Links> links;
+	private List<DefinitionsLinkdescription> links;
 
 	/**
 	 * Default Constructor
 	 */
 	public Refund() {
 	}
-	
+
+
 	/**
-	 * Obtain the Refund transaction resource for the given identifier.
+	 * Shows details for a refund, by ID.
 	 * @deprecated Please use {@link #get(APIContext, String)} instead.
-	 *
 	 * @param accessToken
 	 *            Access Token used for the API call.
 	 * @param refundId
@@ -90,7 +101,7 @@ public class Refund  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Refund transaction resource for the given identifier.
+	 * Shows details for a refund, by ID.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param refundId
@@ -99,7 +110,6 @@ public class Refund  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public static Refund get(APIContext apiContext, String refundId) throws PayPalRESTException {
-
 		if (refundId == null) {
 			throw new IllegalArgumentException("refundId cannot be null");
 		}
@@ -109,6 +119,5 @@ public class Refund  extends PayPalResource {
 		String payLoad = "";
 		return configureAndExecute(apiContext, HttpMethod.GET, resourcePath, payLoad, Refund.class);
 	}
-
 
 }

@@ -2,16 +2,17 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class PaymentOptions  extends PayPalModel {
+public class PaymentOptions extends PayPalModel {
 
 	/**
-	 * Optional payment method type. If specified, the transaction will go through for only instant payment. Only for use with the paypal payment_method, not relevant for the credit_card payment_method.
+	 * Payment method requested for this purchase unit
 	 */
 	private String allowedPaymentMethod;
 
@@ -30,4 +31,5 @@ public class PaymentOptions  extends PayPalModel {
 	 */
 	public PaymentOptions() {
 	}
+
 }

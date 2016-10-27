@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Payer  extends PayPalModel {
+public class Payer extends PayPalModel {
 
 	/**
 	 * Payment method being used - PayPal Wallet payment, Bank Direct Debit  or Direct Credit card.
@@ -21,12 +22,6 @@ public class Payer  extends PayPalModel {
 	 * Status of payer's PayPal Account.
 	 */
 	private String status;
-
-	/**
-	 * Instrument type pre-selected by the user outside of PayPal and passed along the payment creation. This param is used in cases such as PayPal Credit Second Button.
-	 * Possible values: CREDIT, PAY_UPON_INVOICE.
-	 */
-	private String externalSelectedFundingInstrumentType;
 
 	/**
 	 * Type of account relationship payer has with PayPal.
@@ -54,6 +49,11 @@ public class Payer  extends PayPalModel {
 	private FundingOption fundingOption;
 
 	/**
+	 * Instrument type pre-selected by the user outside of PayPal and passed along the payment creation. This param is used in cases such as PayPal Credit Second Button
+	 */
+	private String externalSelectedFundingInstrumentType;
+
+	/**
 	 * Funding option related to default funding option.
 	 */
 	private FundingOption relatedFundingOption;
@@ -68,4 +68,5 @@ public class Payer  extends PayPalModel {
 	 */
 	public Payer() {
 	}
+
 }

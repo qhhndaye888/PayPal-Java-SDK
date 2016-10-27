@@ -2,93 +2,99 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class PaymentCard  extends PayPalModel {
+public class PaymentCard extends PayPalModel {
 
 	/**
-	 * ID of the credit card being saved for later use.
+	 * The ID of a credit card to save for later use.
 	 */
 	private String id;
 
 	/**
-	 * Card number.
+	 * The card number.
 	 */
 	private String number;
 
 	/**
-	 * Type of the Card.
+	 * The card type.
 	 */
 	private String type;
 
 	/**
-	 * 2 digit card expiry month.
+	 * The two-digit expiry month for the card.
 	 */
 	private String expireMonth;
 
 	/**
-	 * 4 digit card expiry year
+	 * The four-digit expiry year for the card.
 	 */
 	private String expireYear;
 
 	/**
-	 * 2 digit card start month. Needed for UK Maestro Card.
+	 * The two-digit start month for the card. Required for UK Maestro cards.
 	 */
 	private String startMonth;
 
 	/**
-	 * 4 digit card start year. Needed for UK Maestro Card. 
+	 * The four-digit start year for the card. Required for UK Maestro cards. 
 	 */
 	private String startYear;
 
 	/**
-	 * Card validation code. Only supported when making a Payment but not when saving a payment card for future use.
+	 * The validation code for the card. Supported for payments but not for saving payment cards for future use.
 	 */
 	private String cvv2;
 
 	/**
-	 * Card holder's first name.
+	 * The first name of the card holder.
 	 */
 	private String firstName;
 
 	/**
-	 * Card holder's last name.
+	 * The last name of the card holder.
 	 */
 	private String lastName;
 
 	/**
-	 * 2 letter country code
+	 * The two-letter country code.
 	 */
-	private String billingCountry;
+	private CountryCode billingCountry;
 
 	/**
-	 * Billing Address associated with this card.
+	 * The billing address for the card.
 	 */
 	private Address billingAddress;
 
 	/**
-	 * A unique identifier of the customer to whom this card account belongs to. Generated and provided by the facilitator. This is required when creating or using a stored funding instrument in vault.
+	 * The ID of the customer who owns this card account. The facilitator generates and provides this ID. Required when you create or use a stored funding instrument in the PayPal vault.
 	 */
 	private String externalCustomerId;
 
 	/**
-	 * State of the funding instrument.
+	 * The state of the funding instrument.
 	 */
 	private String status;
 
 	/**
-	 * Date/Time until this resource can be used fund a payment.
+	 * The product class of the financial instrument issuer.
+	 */
+	private String cardProductClass;
+
+	/**
+	 * The date and time until when this instrument can be used fund a payment.
 	 */
 	private String validUntil;
 
 	/**
-	 * 1-2 digit card issue number. Needed for UK Maestro Card.
+	 * The one- to two-digit card issue number. Required for UK Maestro cards.
 	 */
 	private String issueNumber;
 
@@ -107,12 +113,13 @@ public class PaymentCard  extends PayPalModel {
 	 */
 	public PaymentCard() {
 	}
-	
+
 	/**
 	 * @deprecated Please use {@link #setCard3dSecureInfo(Card3dSecureInfo)} instead.
-	 * 
+	 *
 	 * Setter for 3dSecureInfo
 	 */
+	@Deprecated
 	public PaymentCard set3dSecureInfo(Card3dSecureInfo card3dSecureInfo) {
 		this.card3dSecureInfo = card3dSecureInfo;
 		return this;
@@ -120,7 +127,7 @@ public class PaymentCard  extends PayPalModel {
 
 	/**
 	 * @deprecated Please use {@link #getCard3dSecureInfo()} instead.
-	 * 
+	 *
 	 * Getter for 3dSecureInfo
 	 */
 	public Card3dSecureInfo get3dSecureInfo() {

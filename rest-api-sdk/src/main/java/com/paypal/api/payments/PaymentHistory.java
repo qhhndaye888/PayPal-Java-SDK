@@ -2,16 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class PaymentHistory  extends PayPalModel {
+public class PaymentHistory extends PayPalModel {
 
 	/**
 	 * A list of Payment resources
@@ -19,7 +19,7 @@ public class PaymentHistory  extends PayPalModel {
 	private List<Payment> payments;
 
 	/**
-	 * Number of items returned in each range of results. Note that the last results range could have fewer items than the requested number of items.
+	 * Number of items returned in each range of results. Note that the last results range could have fewer items than the requested number of items. Maximum value: 20.
 	 */
 	private int count;
 
@@ -32,6 +32,6 @@ public class PaymentHistory  extends PayPalModel {
 	 * Default Constructor
 	 */
 	public PaymentHistory() {
-		payments = new ArrayList<Payment>();
 	}
+
 }

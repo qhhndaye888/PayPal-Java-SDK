@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class BankAccount  extends PayPalModel {
+public class BankAccount extends PayPalModel {
 
 	/**
 	 * ID of the bank account being saved for later use.
@@ -108,7 +109,7 @@ public class BankAccount  extends PayPalModel {
 	private String externalCustomerId;
 
 	/**
-	 * A unique identifier of the merchant for which this bank account has been stored for. Generated and provided by the facilitator so it can be used to restrict the usage of the bank account to the specific merchnt.
+	 * A unique identifier of the merchant for which this bank account has been stored for. Generated and provided by the facilitator so it can be used to restrict the usage of the bank account to the specific merchant.
 	 */
 	private String merchantId;
 
@@ -145,5 +146,4 @@ public class BankAccount  extends PayPalModel {
 		this.accountNumber = accountNumber;
 		this.accountNumberType = accountNumberType;
 	}
-
 }

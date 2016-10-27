@@ -17,7 +17,7 @@ public class Patch extends PayPalModel {
 	private String op;
 
 	/**
-	 * string containing a JSON-Pointer value that references a location within the target document (the target location) where the operation is performed.
+	 * A JSON pointer that references a location in the target document where the operation is performed. A `string` value.
 	 */
 	private String path;
 

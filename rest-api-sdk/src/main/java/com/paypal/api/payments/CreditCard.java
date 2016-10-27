@@ -2,7 +2,6 @@ package com.paypal.api.payments;
 
 import com.google.gson.GsonBuilder;
 import com.paypal.base.rest.*;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,44 +17,42 @@ import java.util.Map;
 public class CreditCard  extends PayPalResource {
 
 	/**
-	 * ID of the credit card being saved for later use.
+	 * ID of the credit card. This ID is provided in the response when storing credit cards. **Required if using a stored credit card.**
 	 */
 	private String id;
 
 	/**
-	 * Card number.
+	 * Credit card number. Numeric characters only with no spaces or punctuation. The string must conform with modulo and length required by each credit card type. *Redacted in responses.*
 	 */
 	private String number;
 
 	/**
-	 * Type of the Card (eg. Visa, Mastercard, etc.).
+	 * Credit card type. Valid types are: `visa`, `mastercard`, `discover`, `amex`
 	 */
 	private String type;
 
 	/**
-	 * 2 digit card expiry month.
+	 * Expiration month with no leading zero. Acceptable values are 1 through 12.
 	 */
 	private int expireMonth;
 
 	/**
-	 * 4 digit card expiry year
+	 * 4-digit expiration year.
 	 */
 	private int expireYear;
 
 	/**
-	 * Card validation code. Only supported when making a Payment but not when saving a credit card for future use.
+	 * 3-4 digit card validation code.
 	 */
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private String cvv2;
 
 	/**
-	 * Card holder's first name.
+	 * Cardholder's first name.
 	 */
 	private String firstName;
 
 	/**
-	 * Card holder's last name.
+	 * Cardholder's last name.
 	 */
 	private String lastName;
 
@@ -65,22 +62,22 @@ public class CreditCard  extends PayPalResource {
 	private Address billingAddress;
 
 	/**
-	 * A unique identifier of the customer to whom this bank account belongs to. Generated and provided by the facilitator. This is required when creating or using a stored funding instrument in vault.
+	 * A unique identifier of the customer to whom this bank account belongs. Generated and provided by the facilitator. **This is now used in favor of `payer_id` when creating or using a stored funding instrument in the vault.**
 	 */
 	private String externalCustomerId;
 
 	/**
-	 * State of the funding instrument.
+	 * State of the credit card funding instrument.
 	 */
 	private String state;
 
 	/**
-	 * Date/Time until this resource can be used to fund a payment.
+	 * Funding instrument expiration date.
 	 */
 	private String validUntil;
 
 	/**
-	 *
+	 * 
 	 */
 	private List<Links> links;
 
@@ -136,7 +133,7 @@ public class CreditCard  extends PayPalResource {
 	public String getCvv2String() {
 		return this.cvv2;
 	}
-	
+
 	/**
 	 * Parameterized Constructor
 	 */
@@ -146,7 +143,7 @@ public class CreditCard  extends PayPalResource {
 		this.expireMonth = expireMonth;
 		this.expireYear = expireYear;
 	}
-	
+
 	/**
 	 * Creates a new Credit Card Resource (aka Tokenize).
 	 * @deprecated Please use {@link #create(APIContext)} instead.

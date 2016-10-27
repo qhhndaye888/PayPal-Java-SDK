@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class CartBase  extends PayPalModel {
+public class CartBase extends PayPalModel {
 
 	/**
 	 * Merchant identifier to the purchase unit. Optional parameter
@@ -28,7 +29,7 @@ public class CartBase  extends PayPalModel {
 	private Payee payee;
 
 	/**
-	 * Description of transaction.
+	 * Description of what is being paid for.
 	 */
 	private String description;
 
@@ -38,12 +39,12 @@ public class CartBase  extends PayPalModel {
 	private String noteToPayee;
 
 	/**
-	 * Free-form field for the use of clients. Only supported when the `payment_method` is set to `paypal`.
+	 * free-form field for the use of clients
 	 */
 	private String custom;
 
 	/**
-	 * Invoice number used to track the payment. Only supported when the `payment_method` is set to `paypal`.
+	 * invoice number to track this payment
 	 */
 	private String invoiceNumber;
 
@@ -63,7 +64,7 @@ public class CartBase  extends PayPalModel {
 	private PaymentOptions paymentOptions;
 
 	/**
-	 * Items and related shipping address within a transaction.
+	 * List of items being paid for.
 	 */
 	private ItemList itemList;
 

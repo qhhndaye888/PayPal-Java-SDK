@@ -1,10 +1,10 @@
 package com.paypal.api.payments;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -13,7 +13,7 @@ import java.util.List;
 public class Transaction extends TransactionBase {
 
 	/**
-	 * Additional transactions for complex payment scenarios.
+	 * Financial transactions related to a payment.
 	 */
 	private List<Transaction> transactions;
 
@@ -21,6 +21,6 @@ public class Transaction extends TransactionBase {
 	 * Default Constructor
 	 */
 	public Transaction() {
-		transactions = new ArrayList<Transaction>();
 	}
+
 }

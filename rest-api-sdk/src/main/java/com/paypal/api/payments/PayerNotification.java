@@ -9,15 +9,17 @@ import lombok.experimental.Accessors;
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Measurement extends PayPalModel {
+public class PayerNotification extends PayPalModel {
 
 	/**
-	 * Value this measurement represents.
+	 * Email Address associated with the Payer's PayPal Account.
 	 */
-	private String value;
+	private String email;
 
 	/**
-	 * Unit in which the value is represented.
+	 * Default Constructor
 	 */
-	private String unit;
+	public PayerNotification() {
+	}
+
 }

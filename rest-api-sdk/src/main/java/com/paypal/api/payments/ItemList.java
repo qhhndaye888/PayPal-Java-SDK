@@ -2,16 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class ItemList  extends PayPalModel {
+public class ItemList extends PayPalModel {
 
 	/**
 	 * List of items.
@@ -22,7 +22,7 @@ public class ItemList  extends PayPalModel {
 	 * Shipping address.
 	 */
 	private ShippingAddress shippingAddress;
-	
+
 	/**
 	 * Shipping method used for this payment like USPSParcel etc.
 	 */
@@ -37,6 +37,6 @@ public class ItemList  extends PayPalModel {
 	 * Default Constructor
 	 */
 	public ItemList() {
-		items = new ArrayList<Item>();
 	}
+
 }

@@ -2,8 +2,9 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,10 @@ import java.util.Map;
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Payment  extends PayPalResource {
+public class Payment extends PayPalResource {
 
 	/**
-	 * ID of the created payment, the 'transaction ID'
+	 * Identifier of the payment resource created.
 	 */
 	private String id;
 
@@ -69,12 +70,12 @@ public class Payment  extends PayPalResource {
 	private PaymentInstruction paymentInstruction;
 
 	/**
-	 * Payment state.
+	 * The state of the payment, authorization, or order transaction. The value is:<ul><li><code>created</code>. The transaction was successfully created.</li><li><code>approved</code>. The buyer approved the transaction.</li><li><code>failed</code>. The transaction request failed.</li></ul>
 	 */
 	private String state;
 
 	/**
-	 * PayPal generated identifier for the merchant's payment experience profile. Refer to [this](https://developer.paypal.com/webapps/developer/docs/api/#payment-experience) link to create experience profile ID.
+	 * PayPal generated identifier for the merchant's payment experience profile. Refer to [this](https://developer.paypal.com/docs/api/#payment-experience) link to create experience profile ID.
 	 */
 	private String experienceProfileId;
 
@@ -123,7 +124,7 @@ public class Payment  extends PayPalResource {
 	}
 
 	/**
-	 * Creates (and processes) a new Payment Resource.
+	 * Creates and processes a payment. In the JSON request body, include a `payment` object with the intent, payer, and transactions. For PayPal payments, include redirect URLs in the `payment` object.
 	 * @deprecated Please use {@link #create(APIContext)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -136,14 +137,13 @@ public class Payment  extends PayPalResource {
 	}
 
 	/**
-	 * Creates (and processes) a new Payment Resource.
+	 * Creates and processes a payment. In the JSON request body, include a `payment` object with the intent, payer, and transactions. For PayPal payments, include redirect URLs in the `payment` object.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @return Payment
 	 * @throws PayPalRESTException
 	 */
 	public Payment create(APIContext apiContext) throws PayPalRESTException {
-		apiContext.setRequestId(null);
 		String resourcePath = "v1/payments/payment";
 		String payLoad = this.toJSON();
 		Payment payment = configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, Payment.class);
@@ -153,7 +153,7 @@ public class Payment  extends PayPalResource {
 
 
 	/**
-	 * Obtain the Payment resource for the given identifier.
+	 * Shows details for a payment, by ID.
 	 * @deprecated Please use {@link #get(APIContext, String)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -168,7 +168,7 @@ public class Payment  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Payment resource for the given identifier.
+	 * Shows details for a payment, by ID.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param paymentId
@@ -204,7 +204,7 @@ public class Payment  extends PayPalResource {
 	}
 
 	/**
-	 * Executes the payment (after approved by the Payer) associated with this resource when the payment method is PayPal.
+	 * Executes, or completes, a PayPal payment that the payer has approved. You can optionally update selective payment information when you execute a payment.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param paymentExecution
@@ -213,7 +213,6 @@ public class Payment  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public Payment execute(APIContext apiContext, PaymentExecution paymentExecution) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -226,7 +225,7 @@ public class Payment  extends PayPalResource {
 		String payLoad = paymentExecution.toJSON();
 		return configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, Payment.class);
 	}
-	
+
 	/**
 	 * Partially update a payment resource by by passing the payment_id in the request URI. In addition, pass a patch_request_object in the body of the request JSON that specifies the operation to perform, path of the target location, and new value to apply. Please note that it is not possible to use patch after execute has been called.
 	 * @deprecated Please use {@link #update(APIContext, List)} instad.
@@ -267,7 +266,7 @@ public class Payment  extends PayPalResource {
 
 
 	/**
-	 * Retrieves a list of Payment resources.
+	 * List payments that were made to the merchant who issues the request. Payments can be in any state.
 	 * @deprecated Please use {@link #list(APIContext, Map)} instead.
 	 *
 	 * @param accessToken
@@ -283,8 +282,7 @@ public class Payment  extends PayPalResource {
 	}
 
 	/**
-	 * Retrieves a list of Payment resources.
-	 *
+	 * List payments that were made to the merchant who issues the request. Payments can be in any state.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param containerMap
@@ -293,11 +291,9 @@ public class Payment  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public static PaymentHistory list(APIContext apiContext, Map<String, String> containerMap) throws PayPalRESTException {
-
 		if (containerMap == null) {
 			throw new IllegalArgumentException("containerMap cannot be null");
 		}
-		apiContext.setRequestId(null);
 		Object[] parameters = new Object[] {containerMap};
 		String pattern = "v1/payments/payment?count={0}&start_id={1}&start_index={2}&start_time={3}&end_time={4}&payee_id={5}&sort_by={6}&sort_order={7}";
 		String resourcePath = RESTUtil.formatURIPath(pattern, parameters);
@@ -306,6 +302,5 @@ public class Payment  extends PayPalResource {
 		apiContext.setRequestId(null);
 		return paymentHistory;
 	}
-
 
 }

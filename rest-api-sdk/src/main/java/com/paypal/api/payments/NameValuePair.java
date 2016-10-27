@@ -2,13 +2,14 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.PayPalModel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class NameValuePair  extends PayPalModel {
+public class NameValuePair extends PayPalModel {
 
 	/**
 	 * Key for the name value pair.  The value name types should be correlated 

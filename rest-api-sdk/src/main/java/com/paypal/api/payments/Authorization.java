@@ -2,15 +2,16 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Authorization  extends PayPalResource {
+public class Authorization extends PayPalResource {
 
 	/**
 	 * ID of the authorization transaction.
@@ -78,9 +79,19 @@ public class Authorization  extends PayPalResource {
 	private String updateTime;
 
 	/**
+	 * Identifier to the purchase or transaction unit corresponding to this authorization transaction.
+	 */
+	private String referenceId;
+
+	/**
+	 * Receipt id is 16 digit number payment identification number returned for guest users to identify the payment.
+	 */
+	private String receiptId;
+
+	/**
 	 * 
 	 */
-	private List<Links> links;
+	private List<DefinitionsLinkdescription> links;
 
 	/**
 	 * Default Constructor
@@ -96,7 +107,7 @@ public class Authorization  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Authorization transaction resource for the given identifier.
+	 * Shows details for an authorization, by ID.
 	 * @deprecated Please use {@link #get(APIContext, String)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -111,7 +122,7 @@ public class Authorization  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Authorization transaction resource for the given identifier.
+	 * Shows details for an authorization, by ID.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param authorizationId
@@ -120,7 +131,6 @@ public class Authorization  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public static Authorization get(APIContext apiContext, String authorizationId) throws PayPalRESTException {
-
 		if (authorizationId == null) {
 			throw new IllegalArgumentException("authorizationId cannot be null");
 		}
@@ -133,7 +143,7 @@ public class Authorization  extends PayPalResource {
 
 
 	/**
-	 * Creates (and processes) a new Capture Transaction added as a related resource.
+	 * Captures and processes an authorization, by ID. To use this call, the original payment call must specify an intent of `authorize`.
 	 * @deprecated Please use {@link #capture(APIContext, Capture)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -148,7 +158,7 @@ public class Authorization  extends PayPalResource {
 	}
 
 	/**
-	 * Creates (and processes) a new Capture Transaction added as a related resource.
+	 * Captures and processes an authorization, by ID. To use this call, the original payment call must specify an intent of `authorize`.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param capture
@@ -157,7 +167,6 @@ public class Authorization  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public Capture capture(APIContext apiContext, Capture capture) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -173,7 +182,7 @@ public class Authorization  extends PayPalResource {
 
 
 	/**
-	 * Voids (cancels) an Authorization.
+	 * Voids, or cancels, an authorization, by ID. You cannot void a fully captured authorization.
 	 * @deprecated Please use {@link #doVoid(APIContext)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -186,14 +195,13 @@ public class Authorization  extends PayPalResource {
 	}
 
 	/**
-	 * Voids (cancels) an Authorization.
+	 * Voids, or cancels, an authorization, by ID. You cannot void a fully captured authorization.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @return Authorization
 	 * @throws PayPalRESTException
 	 */
 	public Authorization doVoid(APIContext apiContext) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -206,7 +214,7 @@ public class Authorization  extends PayPalResource {
 
 
 	/**
-	 * Reauthorizes an expired Authorization.
+	 * Reauthorizes a PayPal account payment, by authorization ID. To ensure that funds are still available, reauthorize a payment after the initial three-day honor period. Supports only the `amount` request parameter.
 	 * @deprecated Please use {@link #reauthorize(APIContext)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
@@ -219,14 +227,13 @@ public class Authorization  extends PayPalResource {
 	}
 
 	/**
-	 * Reauthorizes an expired Authorization.
+	 * Reauthorizes a PayPal account payment, by authorization ID. To ensure that funds are still available, reauthorize a payment after the initial three-day honor period. Supports only the `amount` request parameter.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @return Authorization
 	 * @throws PayPalRESTException
 	 */
 	public Authorization reauthorize(APIContext apiContext) throws PayPalRESTException {
-
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
@@ -236,6 +243,5 @@ public class Authorization  extends PayPalResource {
 		String payLoad = this.toJSON();
 		return configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, Authorization.class);
 	}
-
 
 }

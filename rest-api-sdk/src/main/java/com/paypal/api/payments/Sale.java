@@ -2,23 +2,24 @@ package com.paypal.api.payments;
 
 import com.paypal.base.rest.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.Getter; import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Sale  extends PayPalResource {
+public class Sale extends PayPalResource {
 
 	/**
-	 * ID of the sale transaction.
+	 * Identifier of the sale transaction.
 	 */
 	private String id;
 
 	/**
-	 * Identifier of the purchased unit associated with this object.
+	 * Identifier to the purchase or transaction unit corresponding to this sale transaction.
 	 */
 	private String purchaseUnitReferenceId;
 
@@ -33,7 +34,7 @@ public class Sale  extends PayPalResource {
 	private String paymentMode;
 
 	/**
-	 * State of the sale.
+	 * State of the sale transaction.
 	 */
 	private String state;
 
@@ -53,7 +54,7 @@ public class Sale  extends PayPalResource {
 	private String protectionEligibilityType;
 
 	/**
-	 * Expected clearing time for eCheck transactions. Only supported when the `payment_method` is set to `paypal`.
+	 * Expected clearing time for eCheck Transactions. Returned when payment is made with eCheck. Only supported when the `payment_method` is set to `paypal`.
 	 */
 	private String clearingTime;
 
@@ -68,7 +69,7 @@ public class Sale  extends PayPalResource {
 	private List<String> paymentHoldReasons;
 
 	/**
-	 * Transaction fee charged by PayPal for this transaction.
+	 * Transaction fee applicable for this payment.
 	 */
 	private Currency transactionFee;
 
@@ -138,11 +139,10 @@ public class Sale  extends PayPalResource {
 		this.parentPayment = parentPayment;
 		this.createTime = createTime;
 	}
-	
+
 	/**
-	 * Obtain the Sale transaction resource for the given identifier.
+	 * Shows details for a sale, by ID. Returns only sales that were created through the REST API.
 	 * @deprecated Please use {@link #get(APIContext, String)} instead.
-	 *
 	 * @param accessToken
 	 *            Access Token used for the API call.
 	 * @param saleId
@@ -156,7 +156,7 @@ public class Sale  extends PayPalResource {
 	}
 
 	/**
-	 * Obtain the Sale transaction resource for the given identifier.
+	 * Shows details for a sale, by ID. Returns only sales that were created through the REST API.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
 	 * @param saleId
@@ -165,7 +165,6 @@ public class Sale  extends PayPalResource {
 	 * @throws PayPalRESTException
 	 */
 	public static Sale get(APIContext apiContext, String saleId) throws PayPalRESTException {
-
 		if (saleId == null) {
 			throw new IllegalArgumentException("saleId cannot be null");
 		}
@@ -178,47 +177,41 @@ public class Sale  extends PayPalResource {
 
 
 	/**
-	 * Creates (and processes) a new Refund Transaction added as a related resource.
-	 * @deprecated Please use {@link #refund(APIContext, Refund)} instead.
-	 *
+	 * Refunds a sale, by ID. For a full refund, include an empty payload in the JSON request body. For a partial refund, include an `amount` object in the JSON request body.
+	 * @deprecated Please use {@link #refund(APIContext, RefundRequest)} instead.
 	 * @param accessToken
 	 *            Access Token used for the API call.
-	 * @param refund
-	 *            Refund
-	 * @return Refund
+	 * @param refundRequest
+	 *            RefundRequest
+	 * @return DetailedRefund
 	 * @throws PayPalRESTException
 	 */
-	public Refund refund(String accessToken, Refund refund) throws PayPalRESTException {
+	public DetailedRefund refund(String accessToken, RefundRequest refundRequest) throws PayPalRESTException {
 		APIContext apiContext = new APIContext(accessToken);
-		return refund(apiContext, refund);
+		return refund(apiContext, refundRequest);
 	}
 
 	/**
-	 * Creates (and processes) a new Refund Transaction added as a related resource.
+	 * Refunds a sale, by ID. For a full refund, include an empty payload in the JSON request body. For a partial refund, include an `amount` object in the JSON request body.
 	 * @param apiContext
 	 *            {@link APIContext} used for the API call.
-	 * @param refund
-	 *            Refund
-	 * @return Refund
+	 * @param refundRequest
+	 *            RefundRequest
+	 * @return DetailedRefund
 	 * @throws PayPalRESTException
 	 */
-	public Refund refund(APIContext apiContext, Refund refund) throws PayPalRESTException {
-
+	public DetailedRefund refund(APIContext apiContext, RefundRequest refundRequest) throws PayPalRESTException {
 		if (this.getId() == null) {
 			throw new IllegalArgumentException("Id cannot be null");
 		}
-		if (refund == null) {
-			throw new IllegalArgumentException("refund cannot be null");
+		if (refundRequest == null) {
+			throw new IllegalArgumentException("refundRequest cannot be null");
 		}
-		apiContext.setRequestId(null);
 		Object[] parameters = new Object[] {this.getId()};
 		String pattern = "v1/payments/sale/{0}/refund";
 		String resourcePath = RESTUtil.formatURIPath(pattern, parameters);
-		String payLoad = refund.toJSON();
-		Refund refundResponse = configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, Refund.class);
-		apiContext.setRequestId(null);
-		return refundResponse;
+		String payLoad = refundRequest.toJSON();
+		return configureAndExecute(apiContext, HttpMethod.POST, resourcePath, payLoad, DetailedRefund.class);
 	}
-
 
 }
